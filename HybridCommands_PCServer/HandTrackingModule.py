@@ -3,7 +3,7 @@ Based on
 Hand Tracking Module
 By: Computer Vision Zone
 Website: https://www.computervision.zone/
-Modified by: Eduardo Martín Pavéz Fabriani
+Modified by: Eduardo Martin Pavez Fabriani
 """
 
 import cv2
@@ -105,6 +105,17 @@ class HandDetector:
             return allHands
     
     def getHandsInfo(self,hands,hcam):
+        """
+        Separates all relevant information inside hands into useful lists.
+        hands: List of hands with their information.
+        hcam: Height of the camera. 
+        return: Tuple of lists with the following information:
+        lm_data: List of both hands detected with their landmarks
+        LeftLmList: List of landmarks of the left hand
+        RightLmList: List of landmarks of the right hand
+        LeftFingers: List of fingers up of the left hand
+        RightFingers: List of fingers up of the right hand
+        """
         lm_data=[]
         LeftLmList=[]
         RightLmList=[]
@@ -135,8 +146,6 @@ class HandDetector:
             #Finding the distance
             f=680
             d = (W * f) / w
-            #print depth near the handtype
-            # cv2.putText(img, str(int(d)), (info[4], info[5]), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2)
 
             #Store data to send
             d=int(7.65*d) #We convert the cm depth into a pixel value according to the z values of the landmarks. This is a rough estimation.
@@ -146,9 +155,10 @@ class HandDetector:
 
     def fingersUp(self, myLmList):
         """
-        Finds how many fingers are open and returns in a list.
-        :return: List of which fingers are up
+        Finds how many fingers are extended.
+        :return: List of which fingers are up with 1 for extended fingers and 0 for closed.
         """
+      
         fingers=[]
         if self.findDistance(PINKY-2,THUMB,myLmList)>self.findDistance(PINKY-2,THUMB-1,myLmList):
             fingers.append(1)
@@ -163,7 +173,7 @@ class HandDetector:
         return fingers
     
     def findDistance(self,p1,p2,lmList,distType='Total'):
-        """It returns the distance between two landmarks.
+        """It returns the distance between two landmarks. Absolute or in a given axis
         Total distance is always positive, but the others aren't."""
         distance=0
         x1=lmList[p1][0]
@@ -182,45 +192,3 @@ class HandDetector:
             distance=z2-z1
     
         return distance;   
-
-
-def main():
-    cap = cv2.VideoCapture(0)
-    detector = HandDetector(detectionCon=0.8, maxHands=2)
-    while True:
-        # Get image frame
-        success, img = cap.read()
-        # Find the hand and its landmarks
-        hands, img = detector.findHands(img)  # with draw
-        # hands = detector.findHands(img, draw=False)  # without draw
-
-        if hands:
-            # Hand 1
-            hand1 = hands[0]
-            lmList1 = hand1["lmList"]  # List of 21 Landmark points
-            bbox1 = hand1["bbox"]  # Bounding box info x,y,w,h
-            centerPoint1 = hand1['center']  # center of the hand cx,cy
-            handType1 = hand1["type"]  # Handtype Left or Right
-
-            fingers1 = detector.fingersUp(hand1)
-
-            if len(hands) == 2:
-                # Hand 2
-                hand2 = hands[1]
-                lmList2 = hand2["lmList"]  # List of 21 Landmark points
-                bbox2 = hand2["bbox"]  # Bounding box info x,y,w,h
-                centerPoint2 = hand2['center']  # center of the hand cx,cy
-                handType2 = hand2["type"]  # Hand Type "Left" or "Right"
-
-                fingers2 = detector.fingersUp(hand2)
-
-                # Find Distance between two Landmarks. Could be same hand or different hands
-                length, info, img = detector.findDistance(lmList1[8][0:2], lmList2[8][0:2], img)  # with draw
-                # length, info = detector.findDistance(lmList1[8], lmList2[8])  # with draw
-        # Display
-        cv2.imshow("Image", img)
-        cv2.waitKey(1)
-
-
-if __name__ == "__main__":
-    main()

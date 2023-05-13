@@ -16,6 +16,7 @@ detector=HandDetector(maxHands=2,detectionCon=0.8)
 
 
 def print_fps(pTime):
+    """Prints the FPS in the console. Average last 10 frames to show a more stable value."""
     cTime=time.time()
     fps=1/(cTime-pTime)
     pTime=cTime
@@ -28,6 +29,10 @@ def print_fps(pTime):
     return pTime
     
 def get_data2send(img):
+    """Gets the image and returns the list of hand landmarks with the commands to send to the client.
+    Output structure: ['L','command',63 coordinates(x,y,z of 21 landmarks), 'R', 'command', 63 coordinates(x,y,z of 21 landmarks)]
+    In case of go or back commands in right hand, it adds 'percentage' at the end of the 'R' list, which is the distance between thumb and index tips 
+    Sends an empty list if no hand is found or a single hand list if only one hand is found."""
     #Get img size
     hcam, wcam, c = img.shape
     commandL='none'

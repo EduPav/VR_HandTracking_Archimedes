@@ -129,7 +129,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 print(len(dataLength))
                 #Datalength is a byte array, we convert it to int
                 dataLength=int.from_bytes(dataLength,byteorder='little')
-                print(dataLength)
+                # print(dataLength)
                 #Receive image
                 data=conn.recv(40000) #Data average size around 30k   
                 #DATACHECKER
@@ -138,7 +138,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     conn,addr=s.accept()
                     print('Connected by', addr)
                     continue
-                if dataLength>50000:
+                if dataLength>70000:
                     continue
 
                 while len(data)<dataLength:

@@ -160,8 +160,8 @@ class HandDetector:
 
     def fingersUp(self, myLmList):
         """
-        Finds how many fingers are open and returns in a list.
-        :return: List of which fingers are up with 1 for open fingers and 0 for closed.
+        Finds how many fingers are extended.
+        :return: List of which fingers are up with 1 for extended fingers and 0 for closed.
         """
         fingers=[]
         if self.findDistance(PINKY-2,THUMB,myLmList)>self.findDistance(PINKY-2,THUMB-1,myLmList):
@@ -177,7 +177,7 @@ class HandDetector:
         return fingers
     
     def findDistance(self,p1,p2,lmList,distType='Total'):
-        """It returns the distance between two landmarks.
+        """It returns the distance between two landmarks. Absolute or in a given axis
         Total distance is always positive, but the others aren't."""
         distance=0
         x1=lmList[p1][0]
