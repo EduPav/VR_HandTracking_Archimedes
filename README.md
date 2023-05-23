@@ -28,14 +28,13 @@ Some features that you can find in these 2 versions are:
 The Handtracking script is shown to run in a Cloud server and your local machine, but any other alternative via TCP/IP is possible.
 
 ### Mobile Version
-![Mobile Version](/Full%20report%20and%20images/MobileVersionCommunications.png)
+![Mobile Version](/Full%20report%2C%20images%20and%203D%20Model/MobileVersionCommunications.png)
 
 ### PC Version
-![PC Version](/Full%20report%20and%20images/PCVersionCommunications.png)
+![PC Version](/Full%20report%2C%20images%20and%203D%20Model/PCVersionCommunications.png)
 
 ### PC Version Hardware requirements
-![PC Version Hardware](/Full%20report%20and%20images/PCVersionHardware.png)
-
+![PC Version Hardware](/Full%20report%2C%20images%20and%203D%20Model/PCVersionHardware.png)
 
 
 ---
